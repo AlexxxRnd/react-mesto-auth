@@ -1,0 +1,53 @@
+import React from 'react';
+import { withRouter, NavLink, } from 'react-router-dom';
+
+function Register({ onRegister }) {
+    function handleSubmit(e) {
+        e.preventDefault();
+        onRegister({ email, password });
+    }
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    function handleChangeEmail(e) {
+        setEmail(e.target.value);
+    }
+    function handleChangePassword(e) {
+        setPassword(e.target.value);
+    }
+    return (
+        <main className="content">
+            <form className="account__form">
+                <h2 className="account__title">Регистрация</h2>
+                <input
+                    className="account__input"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    required=""
+                    value={email || ""}
+                    onChange={handleChangeEmail}
+                />
+                <input
+                    className="account__input"
+                    name="password"
+                    type="text"
+                    placeholder="Пароль"
+                    required=""
+                    value={password || ""}
+                    onChange={handleChangePassword}
+                />
+                <button
+                    className="account__submit-btn"
+                    type="button"
+                    onClick={handleSubmit}
+                >
+                    Зарегистрироваться
+                </button>
+                <NavLink to="/sign-in" className="account__subtitle">Уже зарегистрированы? Войти</NavLink>
+            </form>
+        </main>
+        //<div className={`popup ${props.isOpen ? "popup_opened" : ""}`} id={`popup_${props.name}`}>
+    );
+};
+
+export default withRouter(Register); 
