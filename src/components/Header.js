@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink, useLocation } from 'react-router-dom';
 import logo from '../images/logo.svg';
 
-function Header() {
+function Header({ loggedIn, onSignOut, userEmail }) {
+    const location = useLocation();
     return (
         <header className="header">
             <img
@@ -10,7 +11,26 @@ function Header() {
                 src={logo}
                 alt="логотип"
             />
-            <NavLink to="/sign-in" className="header__login-btn">Войти</NavLink> 
+            {location.pathname === '/sign-in' && (
+                <NavLink to="/sign-up" className="header__login-btn">
+                    Регистрация
+                </NavLink>
+            )}
+            {location.pathname === '/sign-up' && (
+                <NavLink to="/sign-in" className="header__login-btn">
+                    Войти
+                </NavLink>
+            )}
+            {loggedIn && (
+                <div className="header__user-email">
+                    {userEmail}
+                    <button
+                        className="header__signout-btn"
+                        onClick={onSignOut}>
+                        Выйти
+                    </button>
+                </div>
+            )}
         </header>
     );
 }

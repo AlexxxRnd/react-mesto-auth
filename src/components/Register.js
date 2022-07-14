@@ -46,7 +46,6 @@ function Register({ onRegister }) {
                 <NavLink to="/sign-in" className="account__subtitle">Уже зарегистрированы? Войти</NavLink>
             </form>
         </main>
-        //<div className={`popup ${props.isOpen ? "popup_opened" : ""}`} id={`popup_${props.name}`}>
     );
 };
 

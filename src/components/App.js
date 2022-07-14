@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import Header from './Header'
 import Footer from './Footer'
@@ -10,19 +10,22 @@ import EditProfilePopup from './EditProfilePopup'
 import PopupAddCard from './PopupAddCard'
 import PopupEditAvatar from './PopupEditAvatar'
 import ImagePopup from './ImagePopup'
+import InfoTooltip from './InfoTooltip'
 import ApiRequest from '../utils/Api.js'
 import * as Auth from './Auth.js'
 import { UserContext } from '../contexts/CurrentUserContext';
-
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLogged, setIsLogged] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
+  const [isAuthSuccess, setIsAuthSuccess] = React.useState(false)
   const history = useHistory();
 
   React.useEffect(() => {
@@ -80,47 +83,67 @@ function App() {
     setSelectedCard(card);
   };
 
+  function openInfoTooltip() {
+    setIsInfoTooltipOpen(true);
+  };
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoTooltipOpen(false);
     setSelectedCard({});
   }
 
   function handleRegister(email, password) {
-    return Auth
-      .register(email, password)
-      .catch((err) => {
-        console.log(err);
+    Auth.register(email, password)
+      .then(() => {
+        openInfoTooltip();
+        setIsAuthSuccess(true)
+        history.push('/sign-in');
+      })
+      .catch((error) => {
+        console.log(`Ошибка: ${error}`);
+        setIsAuthSuccess(false)
+        openInfoTooltip();
       });
   };
 
   function handleLogin(email, password) {
-    return Auth
-      .login(email, password)
+    Auth.login(email, password)
       .then((data) => {
         setIsLogged(true);
         localStorage.setItem('jwt', data.token);
         history.push('/');
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(`Ошибка: ${error}`);
         setIsLogged(false);
+        setIsAuthSuccess(false)
+        openInfoTooltip();
       });
   };
 
-  const handleTokenCheck = () => {
+  function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (!jwt) {
       return;
     }
-    Auth
-      .checkTokenValid(jwt)
+    Auth.checkTokenValid(jwt)
       .then((data) => {
+        setUserEmail(data.data.email)
         setIsLogged(true);
         history.push('/');
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.log(`Ошибка: ${error}`);
+      });
+  };
+
+  function handleSignOut() {
+    setIsLogged(false);
+    localStorage.removeItem('jwt');
+    history.push('/sign-in');
   };
 
   React.useEffect(() => {
@@ -185,7 +208,11 @@ function App() {
   return (
     <UserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header
+          loggedIn={isLogged}
+          onSignOut={handleSignOut}
+          userEmail={userEmail}
+        />
 
         <Switch>
           <Route path="/sign-up">
@@ -238,6 +265,12 @@ function App() {
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}
+        />
+
+        <InfoTooltip
+          onClose={closeAllPopups}
+          isOpen={isInfoTooltipOpen}
+          isSuccess={isAuthSuccess}
         />
 
       </div>

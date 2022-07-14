@@ -1,4 +1,4 @@
-.header__login-btn {
+.header__signout-btn {
     width: 53px;
     height: 22px;
     padding: 0;
@@ -9,20 +9,14 @@
     font-size: 18px;
     line-height: 22px;
     text-align: right;
-    color: #FFFFFF;
+    color: #A9A9A9;
     background-color: black;
     border: none;
     text-decoration: none;
+    margin-left: 24px;
 }
 
-.header__login-btn:hover {
+.header__signout-btn:hover {
     opacity: 0.6;
     cursor: pointer;
-}
-
-@media screen and (max-width: 767px) {
-    .header__login-btn {
-        max-width: 53px;
-        margin-left: 22px;
-    }
 }

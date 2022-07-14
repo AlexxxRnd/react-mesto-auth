@@ -44,7 +44,6 @@ function Login({ onLogin }) {
                 </button>
             </form>
         </main>
-        //<div className={`popup ${props.isOpen ? "popup_opened" : ""}`} id={`popup_${props.name}`}>
     );
 };
 
