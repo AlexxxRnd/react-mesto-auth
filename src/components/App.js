@@ -12,7 +12,7 @@ import PopupEditAvatar from './PopupEditAvatar'
 import ImagePopup from './ImagePopup'
 import InfoTooltip from './InfoTooltip'
 import ApiRequest from '../utils/Api.js'
-import * as Auth from './Auth.js'
+import * as Auth from '../utils/Auth.js'
 import { UserContext } from '../contexts/CurrentUserContext';
 
 function App() {
@@ -98,8 +98,8 @@ function App() {
   function handleRegister(email, password) {
     Auth.register(email, password)
       .then(() => {
-        openInfoTooltip();
         setIsAuthSuccess(true)
+        openInfoTooltip();
         history.push('/sign-in');
       })
       .catch((error) => {
@@ -114,6 +114,7 @@ function App() {
       .then((data) => {
         setIsLogged(true);
         localStorage.setItem('jwt', data.token);
+        handleTokenCheck();
         history.push('/');
       })
       .catch((error) => {
@@ -143,6 +144,7 @@ function App() {
   function handleSignOut() {
     setIsLogged(false);
     localStorage.removeItem('jwt');
+    setUserEmail('');
     history.push('/sign-in');
   };
 

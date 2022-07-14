@@ -1,5 +1,5 @@
 .header__login-btn {
-    width: 53px;
+    width: 114px;
     height: 22px;
     padding: 0;
     margin: 0;
@@ -18,11 +18,4 @@
 .header__login-btn:hover {
     opacity: 0.6;
     cursor: pointer;
-}
-
-@media screen and (max-width: 767px) {
-    .header__login-btn {
-        max-width: 53px;
-        margin-left: 22px;
-    }
 }
