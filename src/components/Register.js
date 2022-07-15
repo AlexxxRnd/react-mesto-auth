@@ -1,7 +1,8 @@
 import React from 'react';
-import { withRouter, NavLink, } from 'react-router-dom';
+import { withRouter, NavLink, useHistory } from 'react-router-dom';
 
-function Register({ onRegister }) {
+function Register({ onRegister, loggedIn }) {
+    const history = useHistory();
     function handleSubmit(e) {
         e.preventDefault();
         onRegister({ email, password });
@@ -13,6 +14,9 @@ function Register({ onRegister }) {
     }
     function handleChangePassword(e) {
         setPassword(e.target.value);
+    }
+    if (loggedIn) {
+        history.push('/');
     }
     return (
         <main className="content">

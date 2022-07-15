@@ -219,12 +219,14 @@ function App() {
         <Switch>
           <Route path="/sign-up">
             <Register
+              loggedIn={isLogged}
               onRegister={handleRegister}
             />
           </Route>
 
           <Route path="/sign-in">
             <Login
+              loggedIn={isLogged}
               onLogin={handleLogin}
             />
           </Route>

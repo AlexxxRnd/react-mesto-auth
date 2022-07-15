@@ -1,6 +1,8 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-function Login({ onLogin }) {
+function Login({ onLogin, loggedIn }) {
+    const history = useHistory();
     function handleSubmit(e) {
         e.preventDefault();
         onLogin({ email, password });
@@ -12,6 +14,9 @@ function Login({ onLogin }) {
     }
     function handleChangePassword(e) {
         setPassword(e.target.value);
+    }
+    if (loggedIn) {
+        history.push('/');
     }
     return (
         <main className="content">
