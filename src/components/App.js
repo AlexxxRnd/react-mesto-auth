@@ -98,15 +98,16 @@ function App() {
   function handleRegister(email, password) {
     Auth.register(email, password)
       .then(() => {
-        setIsAuthSuccess(true)
-        openInfoTooltip();
+        setIsAuthSuccess(true)   
         navigate('/sign-in');
       })
       .catch((error) => {
         console.log(`Ошибка: ${error}`);
         setIsAuthSuccess(false)
+      })
+      .finally(() => {
         openInfoTooltip();
-      });
+      })
   };
 
   function handleLogin(email, password) {

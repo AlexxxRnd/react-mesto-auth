@@ -20,7 +20,7 @@ function Login({ onLogin, loggedIn }) {
     }
     return (
         <main className="content">
-            <form className="account__form">
+            <form className="account__form" onSubmit={handleSubmit}>
                 <h2 className="account__title">Вход</h2>
                 <input
                     className="account__input"
@@ -42,8 +42,7 @@ function Login({ onLogin, loggedIn }) {
                 />
                 <button
                     className="account__submit-btn"
-                    type="button"
-                    onClick={handleSubmit}
+                    type="submit"
                 >
                     Войти
                 </button>

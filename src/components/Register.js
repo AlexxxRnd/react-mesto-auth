@@ -20,7 +20,7 @@ function Register({ onRegister, loggedIn }) {
     }
     return (
         <main className="content">
-            <form className="account__form">
+            <form className="account__form" onSubmit={handleSubmit}>
                 <h2 className="account__title">Регистрация</h2>
                 <input
                     className="account__input"
@@ -42,8 +42,7 @@ function Register({ onRegister, loggedIn }) {
                 />
                 <button
                     className="account__submit-btn"
-                    type="button"
-                    onClick={handleSubmit}
+                    type="submit"
                 >
                     Зарегистрироваться
                 </button>
