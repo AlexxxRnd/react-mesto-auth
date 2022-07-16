@@ -1,8 +1,8 @@
 import React from 'react';
-import { withRouter, NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function Register({ onRegister, loggedIn }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     function handleSubmit(e) {
         e.preventDefault();
         onRegister({ email, password });
@@ -16,7 +16,7 @@ function Register({ onRegister, loggedIn }) {
         setPassword(e.target.value);
     }
     if (loggedIn) {
-        history.push('/');
+        navigate('/');
     }
     return (
         <main className="content">
@@ -53,4 +53,4 @@ function Register({ onRegister, loggedIn }) {
     );
 };
 
-export default withRouter(Register); 
+export default Register; 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin, loggedIn }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     function handleSubmit(e) {
         e.preventDefault();
         onLogin({ email, password });
@@ -16,7 +16,7 @@ function Login({ onLogin, loggedIn }) {
         setPassword(e.target.value);
     }
     if (loggedIn) {
-        history.push('/');
+        navigate('/');
     }
     return (
         <main className="content">

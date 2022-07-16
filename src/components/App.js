@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import Header from './Header'
 import Footer from './Footer'
@@ -26,7 +26,7 @@ function App() {
   const [isLogged, setIsLogged] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
   const [isAuthSuccess, setIsAuthSuccess] = React.useState(false)
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     Promise.all([ApiRequest.getUserInfo(), ApiRequest.getInitialCards()])
@@ -100,7 +100,7 @@ function App() {
       .then(() => {
         setIsAuthSuccess(true)
         openInfoTooltip();
-        history.push('/sign-in');
+        navigate('/sign-in');
       })
       .catch((error) => {
         console.log(`Ошибка: ${error}`);
@@ -115,7 +115,7 @@ function App() {
         setIsLogged(true);
         localStorage.setItem('jwt', data.token);
         handleTokenCheck();
-        history.push('/');
+        navigate('/');
       })
       .catch((error) => {
         console.log(`Ошибка: ${error}`);
@@ -134,7 +134,7 @@ function App() {
       .then((data) => {
         setUserEmail(data.data.email)
         setIsLogged(true);
-        history.push('/');
+        navigate('/');
       })
       .catch((error) => {
         console.log(`Ошибка: ${error}`);
@@ -145,7 +145,7 @@ function App() {
     setIsLogged(false);
     localStorage.removeItem('jwt');
     setUserEmail('');
-    history.push('/sign-in');
+    navigate('/sign-in');
   };
 
   React.useEffect(() => {
@@ -154,7 +154,7 @@ function App() {
 
   React.useEffect(() => {
     if (isLogged) {
-      history.push('/');
+      navigate('/');
     }
   }, [isLogged]);
 
@@ -211,40 +211,51 @@ function App() {
     <UserContext.Provider value={currentUser}>
       <div className="page">
         <Header
-          loggedIn={isLogged}
           onSignOut={handleSignOut}
           userEmail={userEmail}
         />
 
-        <Switch>
-          <Route path="/sign-up">
-            <Register
-              loggedIn={isLogged}
-              onRegister={handleRegister}
-            />
-          </Route>
+        <Routes>
 
-          <Route path="/sign-in">
-            <Login
-              loggedIn={isLogged}
-              onLogin={handleLogin}
-            />
-          </Route>
-
-          <ProtectedRoute
-            path="/"
-            loggedIn={isLogged}
-            component={Main}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onClose={closeAllPopups}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
+          <Route
+            path="/sign-up"
+            element={
+              <Register
+                loggedIn={isLogged}
+                onRegister={handleRegister}
+              />
+            }
           />
-        </Switch>
+
+          <Route
+            path="/sign-in"
+            element={
+              <Login
+                loggedIn={isLogged}
+                onLogin={handleLogin}
+              />
+            }
+          />
+
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute loggedIn={isLogged}>
+                <Main
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onClose={closeAllPopups}
+                  onCardClick={handleCardClick}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+              </ProtectedRoute>
+            }
+          />
+
+        </Routes>
 
         <Footer />
 
