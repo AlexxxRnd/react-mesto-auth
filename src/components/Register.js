@@ -34,7 +34,7 @@ function Register({ onRegister, loggedIn }) {
                 <input
                     className="account__input"
                     name="password"
-                    type="text"
+                    type="password"
                     placeholder="Пароль"
                     required=""
                     value={password || ""}
