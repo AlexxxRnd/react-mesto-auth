@@ -12,7 +12,6 @@ function InfoTooltip(props) {
                     type="button"
                     onClick={props.onClose}
                 />
-                <form className="popup__form" name={props.name}>
                     <img
                         className="infotooltip__logo"
                         src={props.isSuccess ? okIcon : errIcon}
@@ -20,7 +19,6 @@ function InfoTooltip(props) {
                     <h2 className="infotooltip__message">{props.isSuccess
                         ? 'Вы успешно зарегистрировались!'
                         : 'Что-то пошло не так! Попробуйте ещё раз.'}</h2>
-                </form>
             </div>
         </div>
     );
